@@ -297,7 +297,60 @@ class spatioModel(nn.Module):
         #                 warped_tensor[batch,:,m,n] = x[batch, 3*z_s:3*(z_s+1),m-u_s,n-v_s]
 
         # print("uvz shape is ", warped_img.size())
-        return warped_img
+        # x_split = x[:,6:9,:,:]
+        # uvz = uvz.permute(0,2,3,1)
+        # warped_img = F.grid_sample(x_split, uvz)
+        return self.relu(warped_img)
+
+    def flow_warp(self, x, flow, padding_mode='zeros'):
+        """Warp an image or feature map with optical flow
+        Args:
+            x (Tensor): size (n, c, h, w)
+            flow (Tensor): size (n, 2, h, w), values range from -1 to 1 (relevant to image width or height)
+            padding_mode (str): 'zeros' or 'border'
+
+        Returns:
+            Tensor: warped image or feature map
+        """
+        assert x.size()[-2:] == flow.size()[-2:]
+        n, _, h, w = x.size()
+        x_ = torch.arange(w).view(1, -1).expand(h, -1)
+        y_ = torch.arange(h).view(-1, 1).expand(-1, w)
+        grid = torch.stack([x_, y_], dim=0).float().cuda()
+        grid = grid.unsqueeze(0).expand(n, -1, -1, -1)
+        grid[:, 0, :, :] = 2 * grid[:, 0, :, :] / (w - 1) - 1
+        grid[:, 1, :, :] = 2 * grid[:, 1, :, :] / (h - 1) - 1
+        grid = grid.add(2 * flow)
+        grid = grid.permute(0, 2, 3, 1)
+        return F.grid_sample(x, grid, padding_mode=padding_mode)
+
+
+    def flow_warp_5d(self, x, flow, padding_mode='zeros'):
+        """Warp an image or feature map with optical flow
+        Args:
+            x (Tensor): size (n, c, h, w)
+            flow (Tensor): size (n, 2, h, w), values range from -1 to 1 (relevant to image width or height)
+            padding_mode (str): 'zeros' or 'border'
+
+        Returns:
+            Tensor: warped image or feature map
+        """
+        assert x.size()[-2:] == flow.size()[-2:]
+        n, _, h, w = x.size()
+        x_s = x.view(n, 3, 5, h, w)
+        flow = flow.unsqueeze(1)
+        x_ = torch.arange(w).view(1, -1).expand(h, -1)
+        y_ = torch.arange(h).view(-1, 1).expand(-1, w)
+        z_ = torch.zeros((h, w), dtype=torch.long)
+        grid = torch.stack([x_, y_, z_], dim=0).float().cuda()
+        grid = grid.unsqueeze(0).unsqueeze(1).expand(n, 1, -1, -1, -1)
+        grid[:, :, 0, :, :] = 2 * grid[:, :, 0, :, :] / (w - 1) - 1
+        grid[:, :, 1, :, :] = 2 * grid[:, :, 1, :, :] / (h - 1) - 1
+        grid = grid.add(2 * flow)
+        grid = grid.permute(0, 1, 3, 4, 2)
+        warp_img = F.grid_sample(x_s, grid, padding_mode=padding_mode)
+        warp_img = warp_img.view(n, 3, h, w)
+        return warp_img
 
 
     def forward(self, x):
@@ -309,7 +362,7 @@ class spatioModel(nn.Module):
         out4 = self.block4(out3) # 6 w
         out4 = out4.add(out1)
         out5 = self.block5(out4) # 6 w
-        out6 = self.tri_interpolate(x, out5)
+        out6 = self.flow_warp_5d(x, out5)
 
 
         # print("Out size is ", out.size())

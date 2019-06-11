@@ -35,7 +35,20 @@ class DVDTrainingDataset(data.Dataset):
         self.name_gts = glob.glob(self.gt_folder + '/*.jpg')
         self.name_gts.sort(reverse=False)
         self.dataset_folder = dataset_folder
-        self.img_size = (64,64)
+        self.img_size = (128,128)
+
+        # self.input_imgs = []
+        # self.gt_imgs = []
+        # for name in self.name_inputs:
+        #     image = Image.open(name)
+        #     image = np.array(image.resize(self.img_size))/255.
+        #     image = np.moveaxis(image, 2, 0)
+        #     self.input_imgs.append(image)
+        # for name in self.name_gts:
+        #     image = Image.open(name)
+        #     image = np.array(image.resize(self.img_size))/255.
+        #     image = np.moveaxis(image, 2, 0)
+        #     self.gt_imgs.append(image)
 
     def __len__(self):
         return len(self.name_inputs)
@@ -44,28 +57,32 @@ class DVDTrainingDataset(data.Dataset):
         img_out = np.zeros((15,self.img_size[0],self.img_size[1]), dtype=np.float32)
         for i in range(5):
             if(idx>=2 and idx<(len(self)-2)):
-                # img_name = os.path.join(self.input_folder, self.name_inputs[idx+i-2])
+                img_name = os.path.join(self.input_folder, self.name_inputs[idx+i-2])
                 img_name = self.name_inputs[idx+i-2]
                 image = Image.open(img_name)
                 image = np.array(image.resize(self.img_size))/255.
                 image = np.moveaxis(image, 2, 0)
                 img_out[3*i:3*(i+1), :, :] = image
+                # img_out[3*i:3*(i+1), :, :] = self.input_imgs[idx+i-2]
             elif(idx < 2):
                 img_name = self.name_inputs[i]
                 image = Image.open(img_name)
                 image = np.array(image.resize(self.img_size))/255.
                 image = np.moveaxis(image, 2, 0)
                 img_out[3*i:3*(i+1), :, :] = image
+                # img_out[3*i:3*(i+1), :, :] = self.input_imgs[i]
             elif(idx >= len(self)-2):
                 img_name = self.name_inputs[len(self)-5+i]
                 image = Image.open(img_name)
                 image = np.array(image.resize(self.img_size))/255.
                 image = np.moveaxis(image, 2, 0)
                 img_out[3*i:3*(i+1), :, :] = image
+                # img_out[3*i:3*(i+1), :, :] = self.input_imgs[len(self)-5+i]
         gt_name = self.name_gts[idx]
         gt = Image.open(gt_name)
         gt = np.array(gt.resize(self.img_size))/255.
         gt = np.moveaxis(gt, 2, 0)
+        # gt = self.gt_imgs[idx]
         #labels = labels.reshape(-1, 2)
 
         return torch.from_numpy(img_out).float(), torch.from_numpy(gt).float()
