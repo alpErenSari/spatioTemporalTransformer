@@ -46,7 +46,8 @@ avg_psnr_bicubic = 0.0
 avg_elapsed_time = 0.0
 count = 0.
 
-img_size = (1280,720)
+# img_size = (1280,720)
+img_size = (640,360)
 
 for i in range(len(image_list)):
 

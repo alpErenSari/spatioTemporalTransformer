@@ -7,7 +7,7 @@ import torch.optim as optim
 from torch.autograd import Variable
 from torch.utils.data import DataLoader, ConcatDataset
 import torchvision.transforms as trans
-from models import Net, Model, spatioModel
+from models import Net, DVDModel, spatioModel
 from dataset import DatasetFromHdf5, DVDTrainingDataset
 
 # Training settings
@@ -60,7 +60,9 @@ def main():
 
     print("===> Building model")
     # model = Net()
-    model = spatioModel(opt.batchSize, 64)
+    # model = spatioModel()
+    # model = DVDModel()
+    model = Net()
     criterion = nn.MSELoss(reduction='mean')
 
     print("===> Setting GPU")

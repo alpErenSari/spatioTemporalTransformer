@@ -16,9 +16,10 @@ class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.residual_layer = self.make_layer(Conv_ReLU_Block, 18)
-        self.input = nn.Conv2d(in_channels=1, out_channels=64, kernel_size=3, stride=1, padding=1, bias=False)
+        self.input = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1, bias=False)
         self.output = nn.Conv2d(in_channels=64, out_channels=1, kernel_size=3, stride=1, padding=1, bias=False)
         self.relu = nn.ReLU(inplace=True)
+        self.spatio = spatioModel()
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -32,21 +33,22 @@ class Net(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        residual = x
-        out = self.relu(self.input(x))
+        residual = x[:,6:9,:,:]
+        out = self.spatio(x)
+        out = self.relu(self.input(out))
         out = self.residual_layer(out)
         out = self.output(out)
         out = torch.add(out,residual)
         return out
 
-class Model(nn.Module):
+class DVDModel(nn.Module):
     def __init__(self):
-        super(Model, self).__init__()
+        super(DVDModel, self).__init__()
         self.relu = nn.ReLU(inplace=True)
-        self.conv1 = nn.Conv2d(in_channels=6, out_channels=64, kernel_size=5, stride=1, padding=2, bias=False)
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=5, stride=1, padding=2, bias=False)
         # self.conv2 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=2, padding=1, bias=False)
         self.sigmoid = nn.Sigmoid()
-        self.flow_model = flowModel()
+        self.spatio = spatioModel()
 
         self.block1 = nn.Sequential(
         nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=2, padding=1, bias=False),
@@ -128,9 +130,9 @@ class Model(nn.Module):
         )
 
     def forward(self, x):
-        out_flow = self.flow_model(x)
-        input_cat = torch.cat((out_flow, x[:,6:9,:,:]), dim=0)
-        out1 = self.relu(self.conv1(input_cat))
+        out_flow = self.spatio(x)
+        # input_cat = torch.cat((out_flow, x[:,6:9,:,:]), dim=0)
+        out1 = self.relu(self.conv1(out_flow))
         # out1 = self.bn1(out1)
         out2 = self.block1(out1) # 21 w
         out3 = self.block2(out2) # 11 w
@@ -221,14 +223,12 @@ class flowModel(nn.Module):
 
 
 class spatioModel(nn.Module):
-    def __init__(self, batchSize, out_size):
+    def __init__(self):
         super(spatioModel, self).__init__()
         self.relu = nn.ReLU(inplace=True)
         self.conv1 = nn.Conv2d(in_channels=15, out_channels=64, kernel_size=5, stride=1, padding=2, bias=False)
         # self.conv2 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=2, padding=1, bias=False)
         self.sigmoid = nn.Sigmoid()
-        self.x_v = torch.arange(out_size).expand((batchSize,out_size,out_size))
-        self.y_v = self.x_v.transpose(1,2)
 
         self.block1 = nn.Sequential(
         nn.Conv2d(in_channels=15, out_channels=64, kernel_size=3, stride=1, padding=1, bias=False),
