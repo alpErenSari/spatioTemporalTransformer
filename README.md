@@ -8,7 +8,7 @@ For training you need to call main_spatio.py file with the corresponding option 
 Example usage
 python main_spatio.py --cuda --batchSize 32 --lr 0.1 --dataset /path/to/training/data
 
-##Testing
-Testing is done with the eval_loop.py file 
+##Test
+Testing is done with the eval_loop.py file
 Example usage
 python eval_loop.py --cuda --model /path/to/model/file --dataset /path/to/test/data
