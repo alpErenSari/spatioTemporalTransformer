@@ -19,7 +19,7 @@ parser.add_argument("--step", type=int, default=10, help="Sets the learning rate
 parser.add_argument("--cuda", action="store_true", help="Use cuda?")
 parser.add_argument("--resume", default="", type=str, help="Path to checkpoint (default: none)")
 parser.add_argument("--start-epoch", default=1, type=int, help="Manual epoch number (useful on restarts)")
-parser.add_argument("--clip", type=float, default=0.4, help="Clipping Gradients. Default=0.4")
+# parser.add_argument("--clip", type=float, default=0.4, help="Clipping Gradients. Default=0.4")
 parser.add_argument("--threads", type=int, default=1, help="Number of threads for data loader to use, Default: 1")
 parser.add_argument("--momentum", default=0.9, type=float, help="Momentum, Default: 0.9")
 parser.add_argument("--weight-decay", "--wd", default=1e-4, type=float, help="Weight decay, Default: 1e-4")
@@ -48,12 +48,11 @@ def main():
     cudnn.benchmark = True
 
     print("===> Loading datasets")
-    # train_set = DatasetFromHdf5("data/train.h5")
+
+    # list all possible datasets
     dataset_names = glob.glob(opt.dataset + "*")
-    # train_set_1 = DVDTrainingDataset('data/DeepVideoDeblurring_Dataset/qualitative_datasets/alley')
-    # train_set_2 = DVDTrainingDataset('data/DeepVideoDeblurring_Dataset/qualitative_datasets/anita')
-    # train_set = ConcatDataset([train_set_1, train_set_2])
-    # train_set = train_set_1 + train_set_2
+
+    # construct the traning by concatenating the available datasets
     train_set_list = [DVDTrainingDataset(dataset_name) for dataset_name in dataset_names]
     train_set = ConcatDataset(train_set_list)
     training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
@@ -125,9 +124,10 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
         # print("Output size is ", model(input).size())
         # print("Iteration is ", iteration)
         loss = criterion(model(input), target)
+        loss_in_out = criterion(input[:,6:9,:,:], target)
         optimizer.zero_grad()
         loss.backward()
-        nn.utils.clip_grad_norm_(model.parameters(),opt.clip)
+        # nn.utils.clip_grad_norm_(model.parameters(),opt.clip)
         optimizer.step()
 
         # if iteration == 0:

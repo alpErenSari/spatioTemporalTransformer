@@ -9,7 +9,7 @@ from PIL import Image
 parser = argparse.ArgumentParser(description="PyTorch VDSR Eval")
 parser.add_argument("--cuda", action="store_true", help="use cuda?")
 parser.add_argument("--model", default="model/model_epoch_50.pth", type=str, help="model path")
-parser.add_argument("--dataset", default="Set5", type=str, help="dataset name, Default: Set5")
+parser.add_argument("--dataset", default="../data/DeepVideoDeblurring_Dataset/quantitative_datasets/", type=str, help="dataset name")
 parser.add_argument("--gpus", default="0", type=str, help="gpu ids (default: 0)")
 
 def PSNR(pred, gt, shave_border=0):
