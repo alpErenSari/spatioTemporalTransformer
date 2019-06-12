@@ -11,57 +11,56 @@ dataset which can be accessed from this [link](http://www.cs.ubc.ca/labs/imager/
 folder. Alternatively, you can place your own videos under <br/>
 `dataset/qualitative_datasets/[video_file_name]/input` as input and <br/>
 `dataset/qualitative_datasets/[video_file_name]/GT` as ground truth videos <br/>
-as frame extracted videos. You can extract a video into frames using ffmpeg with <br/>
+as frame extracted videos. You can extract a video into frames using ffmpeg with
 the following command <br/>
 `ffmpeg -i file.mpg -r 1/1 $foldername/%04d.jpg` <br/>
 where `$foldername` is desired folder for frame extraction
 
 ## Training
-For training you need to call main_spatio.py file with the corresponding option parameters.
+For training you need to call main_spatio.py file with the corresponding option parameters. <br/>
 usage: main_spatio.py [-h] [--batchSize BATCHSIZE] [--nEpochs NEPOCHS]
                       [--lr LR] [--step STEP] [--cuda] [--resume RESUME]
                       [--start-epoch START_EPOCH] [--threads THREADS]
                       [--momentum MOMENTUM] [--weight-decay WEIGHT_DECAY]
                       [--pretrained PRETRAINED] [--gpus GPUS]
-                      [--dataset DATASET]
+                      [--dataset DATASET] <br/>
 
+optional arguments: <br/>
 
-optional arguments:
-
-  --batchSize BATCHSIZE Training batch size
-  --nEpochs NEPOCHS     Number of epochs to train for
-  --lr LR               Learning Rate. Default=0.1
-  --step STEP           Sets the learning rate to the initial LR decayed by
-                        momentum every n epochs, Default: n=10
-  --cuda                Use cuda?
-  --resume RESUME       Path to checkpoint (default: none)
+  --batchSize BATCHSIZE Training batch size <br/>
+  --nEpochs NEPOCHS     Number of epochs to train for <br/>
+  --lr LR               Learning Rate. Default=0.1 <br/>
+  --step STEP           Sets the learning rate to the initial LR decayed by <br/>
+                        momentum every n epochs, Default: n=10 <br/>
+  --cuda                Use cuda? <br/>
+  --resume RESUME       Path to checkpoint (default: none) <br/>
   --start-epoch START_EPOCH
-                        Manual epoch number (useful on restarts)
-  --threads THREADS     Number of threads for data loader to use, Default: 1
-  --momentum MOMENTUM   Momentum, Default: 0.9
-  --weight-decay WEIGHT_DECAY, --wd WEIGHT_DECAY
-                        Weight decay, Default: 1e-4
+                        Manual epoch number (useful on restarts) <br/>
+  --threads THREADS     Number of threads for data loader to use, Default: 1 <br/>
+  --momentum MOMENTUM   Momentum, Default: 0.9 <br/>
+  --weight-decay WEIGHT_DECAY, --wd WEIGHT_DECAY <br/>
+                        Weight decay, Default: 1e-4 <br/>
   --pretrained PRETRAINED
-                        path to pretrained model (default: none)
-  --gpus GPUS           gpu ids (default: 0)
+                        path to pretrained model (default: none) <br/>
+  --gpus GPUS           gpu ids (default: 0) <br/>
   --dataset DATASET     the folder where dataset can be found with specified
-  structure
+  structure <br/>
 
 
-Example usage
+Example usage <br/>
 python main_spatio.py --cuda --batchSize 32 --lr 0.1 --dataset /path/to/training/data
 
 ## Test
-Testing is done with the eval_loop.py file
+Testing is done with the eval_loop.py file <br/>
 usage: eval_loop.py [-h] [--cuda] [--model MODEL] [--dataset DATASET]
-                    [--gpus GPUS]
+                    [--gpus GPUS] <br/>
 
-optional arguments:
-  -h, --help         show this help message and exit
-  --cuda             use cuda?
-  --model MODEL      model path
-  --dataset DATASET  dataset name
-  --gpus GPUS        gpu ids (default: 0)
+optional arguments: <br/>
+  -h, --help         show this help message and exit <br/>
+  --cuda             use cuda? <br/>
+  --model MODEL      model path <br/>
+  --dataset DATASET  dataset name <br/>
+  --gpus GPUS        gpu ids (default: 0) <br/>
 
-Example usage
+Example usage <br/>
 python eval_loop.py --cuda --model /path/to/model/file --dataset /path/to/test/data
