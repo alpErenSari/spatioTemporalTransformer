@@ -1,19 +1,19 @@
 # Spatio-Temporal Transformer Network for Video Restoration
 This is implementation of the paper [Spatio-Temporal Transformer Networkfor Video Restoration](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiOq8qu-eHiAhXIlIsKHbdGCHwQFjAAegQIAhAC&url=http%3A%2F%2Fopenaccess.thecvf.com%2Fcontent_ECCV_2018%2Fpapers%2FTae_Hyun_Kim_Spatio-temporal_Transformer_Network_ECCV_2018_paper.pdf&usg=AOvVaw0lhDjBkIQbpuxCIE3k9a0Q)
 ## Dependencies
-The code was developed on python3 with pytorch and pillow libraries. Please visit [installation guide](https://pytorch.org/get-started/locally/) for pytorch installation. For installing the pillow simple type
+The code was developed on python3 with pytorch and pillow libraries. Please visit [installation guide](https://pytorch.org/get-started/locally/) for pytorch installation. For installing the pillow simple type <br/>
 `pip3 install pillow`
 on terminal
 
 ## Dataset
 The code was trained on [Deep Video Deblurring](https://arxiv.org/pdf/1611.08387)'s
 dataset which can be accessed from this [link](http://www.cs.ubc.ca/labs/imager/tr/2017/DeepVideoDeblurring/DeepVideoDeblurring_Dataset.zip). Unzip it into a desired
-folder. Alternatively, you can place your own videos under
-`dataset/qualitative_datasets/[video_file_name]/input` as input and
-`dataset/qualitative_datasets/[video_file_name]/GT` as ground truth videos
-as frame extracted videos. You can extract a video into frames using ffmpeg with
-the following command
-`ffmpeg -i file.mpg -r 1/1 $foldername/%04d.jpg`
+folder. Alternatively, you can place your own videos under <br/>
+`dataset/qualitative_datasets/[video_file_name]/input` as input and <br/>
+`dataset/qualitative_datasets/[video_file_name]/GT` as ground truth videos <br/>
+as frame extracted videos. You can extract a video into frames using ffmpeg with <br/>
+the following command <br/>
+`ffmpeg -i file.mpg -r 1/1 $foldername/%04d.jpg` <br/>
 where `$foldername` is desired folder for frame extraction
 
 ## Training
