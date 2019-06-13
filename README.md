@@ -53,6 +53,7 @@ python main_spatio.py --cuda --batchSize 32 --lr 0.1 --dataset /path/to/training
 --model vdsr
 
 ## Test
+Test is the eval_loop.py file. It takes both input and ground truth images, processes the input image using selected network and calculate the PSNR between model output and ground image and between ground truth image and input image <br/>
 Testing is done with the eval_loop.py file <br/>
 usage: eval_loop.py [-h] [--cuda] [--model MODEL] [--dataset DATASET]
                     [--gpus GPUS] <br/>

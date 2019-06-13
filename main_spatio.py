@@ -26,7 +26,8 @@ parser.add_argument("--weight-decay", "--wd", default=1e-4, type=float, help="We
 parser.add_argument('--pretrained', default='', type=str, help='path to pretrained model (default: none)')
 parser.add_argument("--gpus", default="0", type=str, help="gpu ids (default: 0)")
 parser.add_argument("--dataset", default="../data/DeepVideoDeblurring_Dataset/quantitative_datasets/", type=str, help="the folder where dataset can be found")
-parser.add_argument("--model", default="spatio", type=str, help="the model to be trained. Default: spatio temporal transformer")
+parser.add_argument("--model", default="spatio", type=str, help="the model to be trained. Default: spatio temporal transformer set  by \"spatio\". Other options are \"dvd\" and \"vdsr\" \
+for deep video deblurring and very deep super resolution method")
 
 def main():
     global opt, model
