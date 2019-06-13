@@ -9,7 +9,7 @@ dataset which can be accessed from this [link](http://www.cs.ubc.ca/labs/imager/
 folder. Alternatively, you can place your own videos under <br/>
 `dataset/qualitative_datasets/[video_file_name]/input` as input and <br/>
 `dataset/qualitative_datasets/[video_file_name]/GT` as ground truth videos <br/>
-as frame extracted videos. You can extract a video into frames using ffmpeg with
+as frame extracted videos. This dataset structure can be used for both training and testing. You can extract a video into frames using ffmpeg with
 the following command <br/>
 `ffmpeg -i file.mpg -r 1/1 $foldername/%04d.jpg` <br/>
 where `$foldername` is desired folder for frame extraction
@@ -41,7 +41,7 @@ optional arguments: <br/>
   --pretrained PRETRAINED
                         path to pretrained model (default: none) <br/>
   --gpus GPUS           gpu ids (default: 0) <br/>
-  --dataset DATASET     the folder where dataset can be found with specified <b/>
+  --dataset DATASET     the folder where dataset can be found with specified <br/>
   --model MODEL         the model to be trained. Default: spatio temporal
                        transformer set by "spatio". Other options are "dvd" and "vdsr" for deep video deblurring and very deep super resolution method
 
