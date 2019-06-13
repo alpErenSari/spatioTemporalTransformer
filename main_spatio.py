@@ -26,6 +26,7 @@ parser.add_argument("--weight-decay", "--wd", default=1e-4, type=float, help="We
 parser.add_argument('--pretrained', default='', type=str, help='path to pretrained model (default: none)')
 parser.add_argument("--gpus", default="0", type=str, help="gpu ids (default: 0)")
 parser.add_argument("--dataset", default="../data/DeepVideoDeblurring_Dataset/quantitative_datasets/", type=str, help="the folder where dataset can be found")
+parser.add_argument("--model", default="spatio", type=str, help="the model to be trained. Default: spatio temporal transformer")
 
 def main():
     global opt, model
@@ -58,10 +59,16 @@ def main():
     training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
 
     print("===> Building model")
-    # model = Net()
-    # model = spatioModel()
-    # model = DVDModel()
-    model = Net()
+
+    if opt.model == "spatio":
+        model = spatioModel()
+    elif opt.model == "vdsr":
+        model = Net()
+    elif opt.model == "dvd":
+        model = DVDModel()
+    else:
+        model = Net()
+
     criterion = nn.MSELoss(reduction='mean')
 
     print("===> Setting GPU")
@@ -131,7 +138,7 @@ def train(training_data_loader, optimizer, model, criterion, epoch):
         optimizer.step()
 
         # if iteration == 0:
-        print("===> Epoch[{}]({}/{}): Loss: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.data))
+        print("===> Epoch[{}]({}/{}): Loss: {:.10f}, Loss_in_out: {:.10f}".format(epoch, iteration, len(training_data_loader), loss.data, loss_in_out.data))
 
 def save_checkpoint(model, epoch):
     model_out_path = "checkpoint/" + "model_epoch_{}.pth".format(epoch)

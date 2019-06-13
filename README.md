@@ -1,9 +1,7 @@
 # Spatio-Temporal Transformer Network for Video Restoration
 This is implementation of the paper [Spatio-Temporal Transformer Networkfor Video Restoration](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiOq8qu-eHiAhXIlIsKHbdGCHwQFjAAegQIAhAC&url=http%3A%2F%2Fopenaccess.thecvf.com%2Fcontent_ECCV_2018%2Fpapers%2FTae_Hyun_Kim_Spatio-temporal_Transformer_Network_ECCV_2018_paper.pdf&usg=AOvVaw0lhDjBkIQbpuxCIE3k9a0Q)
 ## Dependencies
-The code was developed on python3 with pytorch and pillow libraries. Please visit [installation guide](https://pytorch.org/get-started/locally/) for pytorch installation. For installing the pillow simple type <br/>
-`pip3 install pillow`
-on terminal
+The code was developed on python3 with pytorch and pillow libraries. Please visit [installation guide](https://pytorch.org/get-started/locally/) for pytorch installation. For installing the pillow simple type `pip3 install pillow` on terminal
 
 ## Dataset
 The code was trained on [Deep Video Deblurring](https://arxiv.org/pdf/1611.08387)'s
@@ -38,17 +36,21 @@ optional arguments: <br/>
                         Manual epoch number (useful on restarts) <br/>
   --threads THREADS     Number of threads for data loader to use, Default: 1 <br/>
   --momentum MOMENTUM   Momentum, Default: 0.9 <br/>
-  --weight-decay WEIGHT_DECAY, --wd WEIGHT_DECAY <br/>
+  --weight-decay WEIGHT_DECAY, --wd WEIGHT_DECAY
                         Weight decay, Default: 1e-4 <br/>
   --pretrained PRETRAINED
                         path to pretrained model (default: none) <br/>
   --gpus GPUS           gpu ids (default: 0) <br/>
-  --dataset DATASET     the folder where dataset can be found with specified
+  --dataset DATASET     the folder where dataset can be found with specified <b/>
+  --model MODEL         the model to be trained. Default: spatio temporal
+                       transformer set by "spatio". Other options are "dvd" and "vdsr" for deep video deblurring and very deep super resolution method
+
   structure <br/>
 
 
 Example usage <br/>
 python main_spatio.py --cuda --batchSize 32 --lr 0.1 --dataset /path/to/training/data
+--model vdsr
 
 ## Test
 Testing is done with the eval_loop.py file <br/>
@@ -63,4 +65,4 @@ optional arguments: <br/>
   --gpus GPUS        gpu ids (default: 0) <br/>
 
 Example usage <br/>
-python eval_loop.py --cuda --model /path/to/model/file --dataset /path/to/test/data
+python eval_loop.py --cuda --model /path/to/model/file --dataset /path/to/test/data <br/>
