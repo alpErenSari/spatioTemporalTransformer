@@ -1,7 +1,7 @@
 # Spatio-Temporal Transformer Network for Video Restoration
 This is implementation of the paper [Spatio-Temporal Transformer Network for Video Restoration](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=2ahUKEwiOq8qu-eHiAhXIlIsKHbdGCHwQFjAAegQIAhAC&url=http%3A%2F%2Fopenaccess.thecvf.com%2Fcontent_ECCV_2018%2Fpapers%2FTae_Hyun_Kim_Spatio-temporal_Transformer_Network_ECCV_2018_paper.pdf&usg=AOvVaw0lhDjBkIQbpuxCIE3k9a0Q)
 ## Dependencies
-The code was developed on python3 with pytorch and pillow libraries. Please visit [installation guide](https://pytorch.org/get-started/locally/) for pytorch installation. For installing the pillow simple type `pip3 install pillow` on terminal
+The code was developed on python3 with pytorch 1.3.0 and PIL libraries. Please visit [installation guide](https://pytorch.org/get-started/locally/) for pytorch installation. For installing the pillow simple type `pip3 install pillow` on terminal
 
 ## Dataset
 The code was trained on [Deep Video Deblurring](https://arxiv.org/pdf/1611.08387)'s
